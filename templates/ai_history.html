@@ -1,0 +1,67 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Chat History - StudyFlow AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .history-card {
+            background: white;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        .question {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .answer {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin: 20px;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>📚 AI Chat History</h1>
+
+    <a href="{{ url_for('ai_assistant') }}">← Back to AI Assistant</a>
+
+    {% if history %}
+        {% for item in history %}
+            <div class="history-card">
+                <p class="question">Your Question:</p>
+                <p>{{ item['question'] }}</p>
+
+                <p class="question">AI Answer:</p>
+                <p class="answer">{{ item['answer'] }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align:center;">No chat history available yet.</p>
+    {% endif %}
+
+</body>
+</html>
+```

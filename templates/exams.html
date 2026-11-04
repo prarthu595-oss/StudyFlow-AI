@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>StudyFlow AI - Exams</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f1020;
+            color: white;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        h1 {
+            color: #ffffff;
+        }
+
+        .subtitle {
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .form-card,
+        .exam-card {
+            background: #191b32;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 7px;
+            color: #ddd;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            background: #272a46;
+            color: white;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 13px 22px;
+            border: none;
+            border-radius: 10px;
+            background: #6366f1;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .exam-card {
+            border-left: 5px solid #8b5cf6;
+        }
+
+        .exam-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .info {
+            margin: 8px 0;
+            color: #ccc;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 12px 20px;
+            background: #6366f1;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📚 Exam Management</h1>
+
+    <div class="subtitle">
+        Add your upcoming exams and let StudyFlow AI plan your preparation.
+    </div>
+
+    <div class="form-card">
+
+        <h2>➕ Add Exam</h2>
+
+        <form method="POST" action="/exams">
+
+            <label>Subject</label>
+            <input
+                type="text"
+                name="subject"
+                placeholder="Example: Artificial Intelligence"
+                required
+            >
+
+            <label>Exam Date</label>
+            <input
+                type="date"
+                name="exam_date"
+                required
+            >
+
+            <label>Preparation Hours</label>
+            <input
+                type="number"
+                name="preparation_hours"
+                min="0.5"
+                step="0.5"
+                placeholder="Example: 10"
+                required
+            >
+
+            <label>Syllabus / Topics</label>
+            <textarea
+                name="syllabus"
+                placeholder="Example: Unit 1, Unit 2, Search Algorithms, Knowledge Representation..."
+            ></textarea>
+
+            <button type="submit">
+                ➕ Add Exam
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <h2>Upcoming Exams</h2>
+
+    {% if exams %}
+
+        {% for exam in exams %}
+
+            <div class="exam-card">
+
+                <div class="exam-title">
+                    📖 {{ exam["subject"] }}
+                </div>
+
+                <div class="info">
+                    📅 Exam Date: {{ exam["exam_date"] }}
+                </div>
+
+                <div class="info">
+                    ⏱️ Preparation Required:
+                    {{ exam["preparation_hours"] }} hours
+                </div>
+
+                <div class="info">
+                    📚 Syllabus:
+                    {{ exam["syllabus"] or "Not specified" }}
+                </div>
+                
+                <form action="/complete-exam/{{ exam['id'] }}" method="POST">
+                    <button type="submit">✓ Complete Exam</button>
+                </form>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="exam-card">
+            No exams added yet.
+        </div>
+
+    {% endif %}
+
+    <a href="/" class="back">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

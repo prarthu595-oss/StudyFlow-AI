@@ -1,0 +1,38 @@
+STUDYFLOW AI — UPDATED PROJECT
+
+LOCAL SETUP
+1. Open this folder in VS Code.
+2. Create and activate a virtual environment:
+   py -m venv venv
+   venv\\Scripts\\activate
+3. Install packages:
+   pip install -r requirements.txt
+4. Restore your Firebase service account JSON into this folder as:
+   firebase-service-account.json
+   Never commit this private file.
+5. Set GEMINI_API_KEY in your local environment.
+6. Run: py app.py
+
+RENDER
+Build command: pip install -r requirements.txt
+Start command: gunicorn --workers 1 app:app
+Set environment variables:
+- GEMINI_API_KEY
+- FIREBASE_SERVICE_ACCOUNT (complete service-account JSON as a secret)
+- RUN_SCHEDULER=1
+
+NOTIFICATIONS
+- Scheduler starts when Gunicorn imports the Flask app.
+- Use one Gunicorn worker to avoid duplicate schedulers.
+- Deadline checks run every 5 minutes.
+- CRITICAL assignments due today or overdue trigger urgent push alerts.
+- Exams today/tomorrow trigger critical alerts; exams within 3 days get reminders.
+- Goals retain a daily reminder.
+- Firebase Cloud Messaging sends to a registered device token, not the phone number in Settings.
+- The browser/app must grant notification permission and register a valid FCM token.
+
+DATA AND SECURITY
+- Existing database file is preserved if it was present in the uploaded ZIP.
+- Firebase credentials and .env are excluded.
+- Render free local storage may be ephemeral; use persistent storage or PostgreSQL for durable hosted data.
+- Current profile/tasks/device model is shared. Add authentication and per-user data separation before public multi-student use.

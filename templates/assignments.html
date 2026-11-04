@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>StudyFlow AI - Assignments</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #111827;
+            color: white;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #8b9cff;
+        }
+
+        .form-box,
+        .assignment {
+            background: #1f2937;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 5px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #6366f1;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #4f46e5;
+        }
+
+        .assignment {
+            border-left: 5px solid #6366f1;
+        }
+
+        .assignment h3 {
+            margin-top: 0;
+        }
+
+        .empty {
+            color: #9ca3af;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📚 StudyFlow AI</h1>
+
+    <div class="form-box">
+
+        <h2>➕ Add Assignment</h2>
+
+        <form method="POST" action="/assignments">
+
+            <label>Assignment Title</label>
+
+            <input
+                type="text"
+                name="title"
+                placeholder="Example: DBMS Assignment"
+                required
+            >
+
+            <label>Subject</label>
+
+            <input
+                type="text"
+                name="subject"
+                placeholder="Example: DBMS"
+                required
+            >
+
+            <label>Deadline</label>
+
+            <input
+                type="date"
+                name="deadline"
+                required
+            >
+
+            <label>Estimated Study Hours</label>
+
+            <input
+                type="number"
+                name="estimated_hours"
+                min="0.5"
+                step="0.5"
+                placeholder="Example: 3"
+                required
+            >
+
+            <button type="submit">
+                ➕ Add Assignment
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <h2>📋 Your Assignments</h2>
+
+    {% if assignments %}
+
+        {% for assignment in assignments %}
+
+        <div class="assignment">
+
+            <h3>{{ assignment["title"] }}</h3>
+
+            <p>
+                📖 <strong>Subject:</strong>
+                {{ assignment["subject"] }}
+            </p>
+
+            <p>
+                📅 <strong>Deadline:</strong>
+                {{ assignment["deadline"] }}
+            </p>
+
+            <p>
+                ⏱️ <strong>Study Hours:</strong>
+                {{ assignment["estimated_hours"] }} hours
+            </p>
+
+            <p>
+                🤖 <strong>Priority:</strong>
+                {{ assignment["priority"] }}
+            </p>
+
+            <form action="/complete-assignment/{{ assignment['id'] }}" method="POST">
+                <button type="submit">✓ Complete Assignment</button>
+            </form>
+            
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p class="empty">
+            No assignments added yet.
+        </p>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

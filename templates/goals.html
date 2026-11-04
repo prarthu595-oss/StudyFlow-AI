@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyFlow AI - Goals</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0f1020;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #8b5cf6;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #9293a8;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #17182d;
+            border: 1px solid #292a45;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: 1px solid #393b5a;
+            background: #252640;
+            color: white;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #6366f1;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #7c3aed;
+        }
+
+        .goal {
+            background: #252640;
+            padding: 18px;
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #b9bad0;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/" class="back">← Back to Dashboard</a>
+
+    <h1>🎯 My Study Goals</h1>
+    <p class="subtitle">
+        Set goals and stay consistent with your StudyFlow AI plan.
+    </p>
+
+    <div class="card">
+        <h2>➕ Add New Goal</h2>
+
+        <input
+            type="text"
+            id="goalInput"
+            placeholder="Example: Complete DBMS Unit 3"
+        >
+
+        <input
+            type="number"
+            id="hoursInput"
+            placeholder="Target study hours"
+            min="1"
+        >
+
+        <button onclick="addGoal()">Add Goal</button>
+    </div>
+
+    <div class="card">
+        <h2>📌 Your Goals</h2>
+
+        <div id="goalList">
+
+    {% if goals %}
+
+        {% for goal in goals %}
+
+        <div class="goal">
+            <strong>🎯 {{ goal["title"] }}</strong>
+            <p>Target: {{ goal["target_hours"] }} hours</p>
+
+        <form action="/complete-goal/{{ goal['id'] }}" method="POST">
+            <button type="submit">
+               ✓ Complete
+            </button>
+        </form>
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p class="subtitle">No goals added yet.</p>
+
+    {% endif %}
+
+    </div>
+
+    </div>
+
+</div>
+
+<script>
+
+async function addGoal() {
+
+    const goal = document.getElementById("goalInput").value.trim();
+    const hours = document.getElementById("hoursInput").value;
+
+    if (!goal || !hours) {
+        alert("Please enter the goal and study hours.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/goals", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams({
+                title: goal,
+                target_hours: hours
+            })
+        });
+
+        if (response.ok) {
+            window.location.href = "/goals";
+        } else {
+            alert("Could not save the goal.");
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert("Something went wrong while saving the goal.");
+    }
+}
+
+
+
+</script>
+
+</body>
+</html>

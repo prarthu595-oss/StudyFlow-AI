@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notifications - StudyFlow AI</title>
+    <style>
+        body {
+            background: #101322;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+        .card {
+            background: #202740;
+            padding: 18px;
+            margin: 12px 0;
+            border-radius: 12px;
+        }
+        a { color: #78aaff; }
+    </style>
+</head>
+<body>
+    <a href="/">← Back to Dashboard</a>
+    <h1>🔔 Notifications</h1>
+    <p>Stay updated on your assignments,exams and study goals.</p>
+
+    {% for assignment in assignments %}
+        <div class="card">
+            <h3>{{ assignment["title"] }}</h3>
+            <p>Deadline: {{ assignment["deadline"] }}</p>
+            <p>Priority: {{ assignment["priority"] }}</p>
+        </div>
+    {% else %}
+        <p>No pending assignments.</p>
+    {% endfor %}
+</body>
+</html>

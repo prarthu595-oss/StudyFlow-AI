@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyFlow AI - Progress</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f1020;
+            color: white;
+            padding: 30px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .card {
+            background: #17182d;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+        }
+        .number {
+            color: #8b9cf6;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .bar {
+            background: #303149;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 16px;
+        }
+        .fill {
+            background: #6366f1;
+            height: 100%;
+        }
+        a { color: #8b9cf6; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="/">← Back to Dashboard</a>
+    <h1>📊 Study Progress</h1>
+
+    <div class="card">
+        <h3>Assignment Completion</h3>
+        <p class="number">{{ progress_percentage }}%</p>
+        <div class="bar">
+            <div class="fill" style="width: {{ progress_percentage }}%"></div>
+        </div>
+        <p>Completed: {{ completed_assignments }}</p>
+        <p>Pending: {{ pending_assignments }}</p>
+        <p>Total assignments: {{ total_assignments }}</p>
+    </div>
+
+    <div class="card">
+        <h3>📝 Exams</h3>
+        <p class="number">{{ total_exams }}</p>
+        <p>Total exams recorded</p>
+    </div>
+
+    <div class="card">
+        <h3>🎯 Goals</h3>
+        <p class="number">{{ total_goals }}</p>
+        <p>Total goals recorded</p>
+    </div>
+</div>
+</body>
+</html>

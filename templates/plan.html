@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>StudyFlow AI - My Study Plan</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f1020;
+            color: white;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .schedule {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: #191b32;
+            border-left: 5px solid #6366f1;
+            padding: 22px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+        }
+
+        .critical {
+            border-left-color: #ef4444;
+        }
+
+        .high {
+            border-left-color: #f97316;
+        }
+
+        .medium {
+            border-left-color: #eab308;
+        }
+
+        .low {
+            border-left-color: #22c55e;
+        }
+
+        .time {
+            font-size: 20px;
+            font-weight: bold;
+            color: #a5b4fc;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .subject {
+            color: #bbb;
+            margin-top: 5px;
+        }
+
+        .priority {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #252849;
+            font-size: 13px;
+        }
+
+        .hours {
+            margin-top: 12px;
+            color: #ddd;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 20px;
+            background: #6366f1;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .ai-card {
+            background: #191b32;
+            border-left: 5px solid #a855f7;
+            padding: 22px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+        }
+
+        .ai-card h2 {
+            margin-top: 0;
+            color: #c084fc;
+        }
+
+        .ai-text {
+            color: #ffffff;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            font-size: 16px;
+        }
+
+        .ai-button {
+            background: #6c63ff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 15px;
+        }
+
+        .ai-button:hover {
+            opacity: 0.85;
+        }
+        
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🤖 StudyFlow AI</h1>
+
+    <div class="subtitle">
+        Your intelligent study plan for today
+    </div>
+
+        <div class="ai-card">
+            <h2>🤖 AI Study Recommendation</h2>
+            <div class="ai-text" id="aiText">
+            {{ai_recommendation}}
+            </div>
+
+        <form action="/plan" method="GET">
+            <button type="submit" class="ai-button">
+                🔄 Regenerate Smart Schedule
+            </button>
+        </form>
+        </div>
+
+        <form action="/plan" method="GET">
+            <button type="submit" class="ai-button">
+                🔄 Regenerate Smart Schedule
+            </button>
+        </form>
+
+    {% if schedule %}
+
+        <div class="schedule">
+
+            {% for item in schedule %}
+
+                <div class="card {{ item.priority|lower }}">
+
+                    <div class="time">
+                        {{ item.start_time }} – {{ item.end_time }}
+                    </div>
+
+                    <div class="title">
+                        {{ item.title }}
+                    </div>
+
+                    <div class="subject">
+                        📚 Subject: {{ item.subject }}
+                    </div>
+
+                    <div class="subject">
+                        📅 Deadline: {{ item.deadline }}
+                    </div>
+
+                    <div class="hours">
+                        ⏱️ Study Time: {{ item.hours }} hours
+                    </div>
+
+                    <div class="priority">
+                        🎯 Priority: {{ item.priority }}
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="card">
+
+            <h2>No study tasks available</h2>
+
+            <p>
+                Add an assignment first to generate your study plan.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+    <a class="back" href="/">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

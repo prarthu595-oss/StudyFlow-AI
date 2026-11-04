@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyFlow AI - Settings</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fc;
+            color: #1e293b;
+            padding: 25px;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 20px auto;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #64748b;
+        }
+
+        .settings-card {
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .section-title {
+            font-size: 19px;
+            margin: 22px 0 18px;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        }
+
+        .help-text {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 6px;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .checkbox-row input {
+            width: 18px;
+            height: 18px;
+            accent-color: #4f46e5;
+        }
+
+        .checkbox-row label {
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .save-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #4f46e5;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        .save-btn:hover {
+            background: #4338ca;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            .settings-card {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <a href="/" class="back-link">← Back to Dashboard</a>
+
+        <div class="header">
+            <h1>⚙️ Settings</h1>
+            <p>Personalize your StudyFlow AI experience.</p>
+        </div>
+
+        <div class="settings-card">
+
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+
+            <form action="{{ url_for('settings') }}" method="POST">
+
+                <h2 class="section-title">👤 Student Profile</h2>
+
+                <div class="form-group">
+                    <label for="name">Student Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value="{{ profile['name'] if profile else '' }}"
+                        placeholder="Enter your name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value="{{ profile['phone'] if profile else '' }}"
+                        placeholder="Enter your phone number"
+                        pattern="[+]?[0-9 ]{10,16}"
+                        title="Enter a valid phone number"
+                        required
+                    >
+                    <p class="help-text">
+                        Include your country code if needed, for example +91.
+                    </p>
+                </div>
+
+                <h2 class="section-title">📚 Study Preferences</h2>
+
+                <div class="form-group">
+                    <label for="study_hours">Daily Study Hours</label>
+                    <input
+                        type="number"
+                        id="study_hours"
+                        name="study_hours"
+                        min="1"
+                        max="16"
+                        value="{{ study_hours if study_hours else 7 }}"
+                        required
+                    >
+                    <p class="help-text">
+                        Choose how many hours you want to study each day.
+                    </p>
+                </div>
+
+                <h2 class="section-title">🔔 Notification Preferences</h2>
+
+                <div class="checkbox-row">
+                    <input
+                        type="checkbox"
+                        id="assignment_notifications"
+                        name="assignment_notifications"
+                        value="on"
+                        {% if assignment_notifications %}checked{% endif %}
+                    >
+                    <label for="assignment_notifications">
+                        Assignment deadline reminders
+                    </label>
+                </div>
+
+                <div class="checkbox-row">
+                    <input
+                        type="checkbox"
+                        id="exam_notifications"
+                        name="exam_notifications"
+                        value="on"
+                        {% if exam_notifications %}checked{% endif %}
+                    >
+                    <label for="exam_notifications">
+                        Exam preparation reminders
+                    </label>
+                </div>
+
+                <div class="checkbox-row">
+                    <input
+                        type="checkbox"
+                        id="goal_notifications"
+                        name="goal_notifications"
+                        value="on"
+                        {% if goal_notifications %}checked{% endif %}
+                    >
+                    <label for="goal_notifications">
+                        Study goal reminders
+                    </label>
+                </div>
+
+                <button type="submit" class="save-btn">
+                    💾 Save Settings
+                </button>
+
+            </form>
+        </div>
+    </div>
+</body>
+</html>
